@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+data/
+work/
+paper/*.aux
+paper/*.log
+paper/*.out
+.DS_Store
+.deepeval/
+# the manuscript and author details stay local until submission
+paper/main.tex
+paper/main.pdf
+paper/author.tex
+*.zip

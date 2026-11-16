@@ -1,0 +1,29 @@
+{
+ "parts": {
+  "train": {
+   "docs": 109755,
+   "words": 33762751,
+   "chars": 287334731
+  },
+  "dev": {
+   "docs": 2177,
+   "words": 706556,
+   "chars": 5994049
+  },
+  "test": {
+   "docs": 2138,
+   "words": 670181,
+   "chars": 5700737
+  }
+ },
+ "types": 666078,
+ "singletons": 0.46956812865760467,
+ "cands_mean": 3.8554013193649994,
+ "cands_max": 20,
+ "templates": 99,
+ "morphemes": 68,
+ "surface": 714,
+ "seg_types": 0.6422686231942806,
+ "seg_tokens": 0.5516487385758346,
+ "morphs_per_token": 1.7037221581855104
+}
