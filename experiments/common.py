@@ -15,7 +15,7 @@ def load_tok(tok_dir):
     seg = None
     if args.get("seg_table"):
         from build_tokenizers import load_segmenter
-        seg = load_segmenter(args["seg_table"], args.get("seg_model"))
+        seg = load_segmenter(args["seg_table"], args.get("seg_model"), args.get("stem_only", False))
     return SakhaTokenizer.load(tok_dir, seg)
 
 

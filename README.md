@@ -68,7 +68,7 @@ tok.decode(tok.encode("Оҕолор дьиэлэригэр бардылар.")) 
 
 ```bash
 pip install -r requirements-experiments.txt
-bash experiments/run_all.sh RAW_DIR WORK_DIR     # about 4 hours on one NVIDIA H200
+bash experiments/run_all.sh RAW_DIR WORK_DIR     # about 10 hours on one NVIDIA H200
 python paper/make_numbers.py                     # numbers and tables of the paper
 ```
 
@@ -90,7 +90,15 @@ Steps of `run_all.sh`:
    - `eval_generate.py`: share of non-words in sampled continuations;
    - `eval_asr.py`: rescoring of speech-recognition n-best lists (optional).
 6. `eval_unimorph.py` scores segmentations against UniMorph stem boundaries.
-7. `make_tables.py` collects everything and runs the paired bootstrap tests.
+7. Ablations: one boundary per word (`--stem_only`), no depth bonus, 10 % and 1 % of the
+   training corpus (`subset_corpus.py`), a smaller and a larger model.
+8. `mt_prep.py` and `mt.py`: Russian-Sakha translation in both directions with the same
+   decoder-only model, from scratch and from the language-model weights (optional).
+9. `make_tables.py` collects everything and runs the paired bootstrap tests.
+
+The translation experiment needs `WORK_DIR/mt/raw/parallel.parquet`: the
+[parallel corpus of the Olonkho Institute, NEFU](https://huggingface.co/datasets/averoo/sakha-russian-parallel-corpora-all)
+(CC BY 4.0), file `data/train-00000-of-00001.parquet`. It is skipped when the file is absent.
 
 The speech-recognition experiment needs `WORK_DIR/eval/nbest.json.gz`: a list of
 `{"ref": str, "nbest": [[hypothesis, acoustic_score], ...]}`. The lists used in the paper

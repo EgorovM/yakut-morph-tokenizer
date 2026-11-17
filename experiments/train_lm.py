@@ -35,6 +35,7 @@ ap.add_argument("--warmup", type=int, default=500)
 ap.add_argument("--evals", type=int, default=40, help="number of dev evaluations over the run")
 ap.add_argument("--seed", type=int, default=0)
 ap.add_argument("--max_steps", type=int, default=0)
+ap.add_argument("--dropout", type=float, default=0.0)
 a = ap.parse_args()
 
 torch.manual_seed(a.seed)
@@ -45,7 +46,7 @@ os.makedirs(a.run, exist_ok=True)
 stats = json.load(open(os.path.join(a.tok, "stats.json")))
 train = np.load(os.path.join(a.tok, "train.npy"), mmap_mode="r")
 dev = np.load(os.path.join(a.tok, "dev.npy")).astype(np.int64)
-model = GPT(stats["vocab"], a.ctx, a.layers, a.d, a.heads).cuda()
+model = GPT(stats["vocab"], a.ctx, a.layers, a.d, a.heads, a.dropout).cuda()
 steps = a.max_steps or int(a.epochs * len(train) / (a.batch * a.ctx))
 cfg = {"model": model.cfg, "args": vars(a), "steps": steps, "params": model.n_params(),
        "params_no_emb": model.n_params(False), "train_tokens": int(len(train))}

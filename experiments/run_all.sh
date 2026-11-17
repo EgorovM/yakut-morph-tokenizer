@@ -7,7 +7,7 @@
 #           one UTF-8 text file per document
 # WORK_DIR  everything is written here: data/ seg/ morfessor/ tok/ runs/ eval/ results/
 #
-# One NVIDIA H200: about 4 hours.  Set JOBS to the number of models trained at once.
+# One NVIDIA H200: about 10 hours.  Set JOBS to the number of models trained at once.
 set -e
 X=$(cd "$(dirname "$0")" && pwd); RAW=$(cd "$1" && pwd); mkdir -p "$2"; cd "$2"
 export PYTHON=${PYTHON:-python}; P=$PYTHON; JOBS=${JOBS:-4}
@@ -49,6 +49,46 @@ export -f job; export X
   for s in 0 1 2; do for t in bpe8k morph8k mfs8k; do echo "$t $s"; done; done
 } | xargs -P $JOBS -L 1 bash -c 'job "$@"' _
 
-# 5. tables and figures
+# 5. ablations: segmentation depth, training-set size, model size
+$P $B data tok/stem8k --kind bpe --vocab 8000 $S --stem_only
+$P $X/train_segmenter.py data seg_g0 --depth_bonus 0
+$P $B data tok/nog8k --kind bpe --vocab 8000 --seg_table seg_g0/table.tsv.gz --seg_model seg_g0/segmenter.json.gz
+for n in 10 100; do
+  d=$((100 / n)); v=$([ $n = 10 ] && echo 8 || echo 4)
+  $P $X/subset_corpus.py data data_$d --every $n
+  $P $X/train_segmenter.py data_$d seg_$d
+  $P $B data_$d tok/bpe${v}k-d$d --kind bpe --vocab ${v}000
+  $P $B data_$d tok/morph${v}k-d$d --kind bpe --vocab ${v}000 --seg_table seg_$d/table.tsv.gz --seg_model seg_$d/segmenter.json.gz
+done
+abl() { t=$1; r=$2; s=$3; shift 3
+  $PYTHON $X/train_lm.py tok/$t runs/${r}_s$s --seed $s "$@" > logs/run_${r}_s$s.log 2>&1
+  bash $X/eval_all.sh $t ${r}_s$s > logs/eval_${r}_s$s.log 2>&1; }
+export -f abl
+{ for t in bpe8k morph8k; do
+    echo "$t $t-S 0 --layers 4 --d 256 --heads 4"
+    echo "$t $t-L 0 --layers 12 --d 768 --heads 12 --lr 6e-4"
+  done
+  for s in 0 1 2; do
+    for t in stem8k nog8k; do echo "$t $t $s"; done
+    for t in bpe8k-d10 morph8k-d10; do echo "$t $t $s --batch 32 --epochs 30 --dropout 0.1"; done
+    for t in bpe4k-d1 morph4k-d1; do echo "$t $t $s --batch 16 --epochs 60 --dropout 0.1 --warmup 200"; done
+  done; } | xargs -P $JOBS -L 1 bash -c 'abl "$@"' _
+
+# 6. translation (optional): put the parallel corpus into mt/raw/parallel.parquet (see README)
+if [ -f mt/raw/parallel.parquet ]; then
+  $P $X/mt_prep.py mt/raw/parallel.parquet mt/pairs
+  mt() { r=mt/runs/$1_$2_$3_s$4; i=""; [ $3 = init ] && i="--init runs/$2_s$5"
+    $PYTHON $X/mt.py mt/pairs tok/$2 $r --dir $1 --seed $4 --epochs 30 --dropout 0.2 $i > logs/mt_$1_$2_$3_s$4.log 2>&1; }
+  export -f mt
+  { for d in ru2sah sah2ru; do
+      for t in bpe8k mfs8k morph8k; do
+        for s in 0 1 2 3 4; do echo "$d $t scratch $s 0"; done
+        for s in 0 1 2; do echo "$d $t init $s $s"; done
+      done
+      for t in bpe2k morph2k bpe32k morph32k; do for s in 0 1 2; do echo "$d $t init $s 0"; done; done
+    done; } | xargs -P $JOBS -L 1 bash -c 'mt "$@"' _
+fi
+
+# 7. tables and figures
 $P $X/make_tables.py . results
 $P $X/corpus_stats.py . results/corpus_stats.json

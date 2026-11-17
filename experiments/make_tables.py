@@ -132,7 +132,11 @@ def compare(a, b):
 
 for a, b in (("morph8k", "bpe8k"), ("mfs8k", "bpe8k"), ("morph8k", "mfs8k"), ("morph8k", "char"),
              ("bpe8k", "char"), ("unimorph8k", "uni8k"), ("morph2k", "bpe2k"), ("morph4k", "bpe4k"),
-             ("morph16k", "bpe16k"), ("morph32k", "bpe32k")):
+             ("morph16k", "bpe16k"), ("morph32k", "bpe32k"),
+             # ablations: model size, training-set size, segmentation depth
+             ("morph8k-S", "bpe8k-S"), ("morph8k-L", "bpe8k-L"), ("morph8k-d10", "bpe8k-d10"),
+             ("morph4k-d1", "bpe4k-d1"), ("stem8k", "bpe8k"), ("nog8k", "bpe8k"), ("morph8k", "stem8k"),
+             ("morph8k", "nog8k")):
     if a in runs and b in runs:
         summary["tests"][f"{a}-{b}"] = compare(a, b)
 
@@ -161,6 +165,40 @@ if os.path.exists(pairs_path):
                                                                  - xb[slice(None) if i is None else i].mean()))
             summary["tests"][f"{a}-{b}"]["pairs_same_stem"] = {"delta": -r["delta"], "lo": -r["hi"], "hi": -r["lo"],
                                                               "p_better": r["p_better"]}
+
+# ------------------------------------------------------------------ translation
+MT_PAIRS = (("morph8k", "bpe8k"), ("mfs8k", "bpe8k"), ("morph8k", "mfs8k"), ("morph2k", "bpe2k"), ("morph32k", "bpe32k"))
+for sfx, key in (("", "mt"), ("_phrase", "mt_phrase")):       # main test set, extra test set
+    mt = collections.defaultdict(lambda: collections.defaultdict(dict))
+    for d in sorted(glob.glob(os.path.join(root, "mt", "runs", "*_s*"))):
+        r = jload(os.path.join(d, f"mt{sfx}.json"))
+        if not r:
+            continue
+        direction, tok, mode = os.path.basename(d).rsplit("_s", 1)[0].split("_")
+        mt[f"{direction}/{mode}"][tok][int(os.path.basename(d).rsplit("_s", 1)[1])] = (r, d)
+    summary[key], summary[key + "_tests"] = {}, {}
+    for cond, toks in mt.items():
+        summary[key][cond] = {}
+        for tok, seeds in toks.items():
+            row = {"seeds": sorted(seeds)}
+            for k in ("chrf", "bleu"):
+                v = [seeds[s][0][k] for s in sorted(seeds)]
+                row[k] = {"mean": float(np.mean(v)), "std": float(np.std(v, ddof=1)) if len(v) > 1 else None, "values": v}
+            summary[key][cond][tok] = row
+        for a, b in MT_PAIRS:
+            if a in toks and b in toks:
+                xa, xb = (np.mean([np.load(os.path.join(d, f"sent_chrf{sfx}.npy")) for _, d in toks[x].values()], axis=0)
+                          for x in (a, b))
+                r = boot(lambda i: len(xa) if isinstance(i, str) else -(xa[slice(None) if i is None else i].mean()
+                                                                     - xb[slice(None) if i is None else i].mean()))
+                summary[key + "_tests"][f"{cond}/{a}-{b}"] = {
+                    "delta": -r["delta"], "lo": -r["hi"], "hi": -r["lo"], "p_better": r["p_better"],
+                    "corpus_delta": summary[key][cond][a]["chrf"]["mean"] - summary[key][cond][b]["chrf"]["mean"]}
+mt_cfg = jload(os.path.join(root, "mt", "runs", "ru2sah_bpe8k_scratch_s0", "config.json"))
+if mt_cfg:
+    summary["mt_pairs"] = mt_cfg["pairs"]
+    ph = os.path.join(root, "mt", "pairs", "phrase.jsonl")
+    summary["mt_phrase_pairs"] = sum(1 for _ in open(ph, encoding="utf-8")) if os.path.exists(ph) else 0
 
 summary["human_generate"] = jload(os.path.join(root, "eval", "human_generate.json"))
 summary["unimorph"] = jload(os.path.join(root, "eval", "unimorph_test.json"))

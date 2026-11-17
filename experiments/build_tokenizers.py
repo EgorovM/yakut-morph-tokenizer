@@ -25,7 +25,7 @@ from yakut_morph_tokenizer.tokenizer import (BOS, SPECIALS, UNK, SakhaTokenizer,
                                              mark_chunk, train_subword)
 
 
-def load_segmenter(table_path, model_path=None):
+def load_segmenter(table_path, model_path=None, stem_only=False):
     table = {}
     for line in gzip.open(table_path, "rt", encoding="utf-8"):
         w, m = line.rstrip("\n").split("\t")
@@ -37,6 +37,11 @@ def load_segmenter(table_path, model_path=None):
         import morfessor
         mm = morfessor.MorfessorIO().read_binary_model_file(table_path + ".model")
         fallback = lambda w: tuple(mm.viterbi_segment(w)[0])  # noqa: E731
+    if stem_only:          # ablation: keep only the boundary between the stem and the suffix chain
+        cut = lambda m: m if len(m) < 2 else (m[0], "".join(m[1:]))  # noqa: E731
+        table = {w: cut(m) for w, m in table.items()}
+        full = fallback
+        fallback = (lambda w: cut(full(w))) if full else None
     return TableSegmenter(table, fallback)
 
 
@@ -48,13 +53,14 @@ def main():
     ap.add_argument("--vocab", type=int, default=8000)
     ap.add_argument("--seg_table")
     ap.add_argument("--seg_model")
+    ap.add_argument("--stem_only", action="store_true", help="ablation: one boundary per word, after the stem")
     ap.add_argument("--encode_only", action="store_true", help="reuse the tokenizer in OUT_DIR")
     ap.add_argument("--force", action="store_true", help="with --encode_only: rewrite train.npy too")
     a = ap.parse_args()
     t0 = time.time()
     docs = {p: [l.rstrip("\n") for l in open(os.path.join(a.data, p + ".txt"), encoding="utf-8")]
             for p in ("train", "dev", "test")}
-    seg = load_segmenter(a.seg_table, a.seg_model) if a.seg_table else None
+    seg = load_segmenter(a.seg_table, a.seg_model, a.stem_only) if a.seg_table else None
     counts = collections.Counter()
     for d in docs["train"]:
         counts.update(d.split(" "))

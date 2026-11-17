@@ -10,9 +10,9 @@ import torch.nn.functional as F
 
 
 class Block(nn.Module):
-    def __init__(self, d, heads):
+    def __init__(self, d, heads, dropout=0.0):
         super().__init__()
-        self.heads = heads
+        self.heads, self.drop = heads, nn.Dropout(dropout)
         self.ln1, self.ln2 = nn.LayerNorm(d), nn.LayerNorm(d)
         self.qkv = nn.Linear(d, 3 * d, bias=False)
         self.proj = nn.Linear(d, d, bias=False)
@@ -22,18 +22,18 @@ class Block(nn.Module):
         b, t, d = x.shape
         q, k, v = self.qkv(self.ln1(x)).view(b, t, 3, self.heads, d // self.heads).permute(2, 0, 3, 1, 4)
         y = F.scaled_dot_product_attention(q, k, v, is_causal=True)
-        x = x + self.proj(y.transpose(1, 2).reshape(b, t, d))
-        return x + self.fc2(F.gelu(self.fc1(self.ln2(x))))
+        x = x + self.drop(self.proj(y.transpose(1, 2).reshape(b, t, d)))
+        return x + self.drop(self.fc2(F.gelu(self.fc1(self.ln2(x)))))
 
 
 class GPT(nn.Module):
-    def __init__(self, vocab, ctx=512, layers=8, d=512, heads=8):
+    def __init__(self, vocab, ctx=512, layers=8, d=512, heads=8, dropout=0.0):
         super().__init__()
-        self.cfg = dict(vocab=vocab, ctx=ctx, layers=layers, d=d, heads=heads)
-        self.ctx = ctx
+        self.cfg = dict(vocab=vocab, ctx=ctx, layers=layers, d=d, heads=heads, dropout=dropout)
+        self.ctx, self.drop = ctx, nn.Dropout(dropout)
         self.tok = nn.Embedding(vocab, d)
         self.pos = nn.Embedding(ctx, d)
-        self.blocks = nn.ModuleList(Block(d, heads) for _ in range(layers))
+        self.blocks = nn.ModuleList(Block(d, heads, dropout) for _ in range(layers))
         self.ln = nn.LayerNorm(d)
         self.head = nn.Linear(d, vocab, bias=False)
         self.head.weight = self.tok.weight
@@ -49,7 +49,7 @@ class GPT(nn.Module):
 
     def forward(self, idx):
         t = idx.shape[1]
-        x = self.tok(idx) + self.pos(torch.arange(t, device=idx.device))
+        x = self.drop(self.tok(idx) + self.pos(torch.arange(t, device=idx.device)))
         for b in self.blocks:
             x = b(x)
         return self.head(self.ln(x))

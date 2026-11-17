@@ -48,11 +48,11 @@ Unigram & 8\,000 & 69{,}7 & 4{,}12 & 62{,}5 \\
 \newcommand{\TokSingleMorph}{38}
 \newcommand{\TokSingleBpe}{66}
 \newcommand{\ParamsBody}{25{,}2}
-\newcommand{\ParamsMin}{25{,}8}
-\newcommand{\ParamsMax}{41{,}8}
-\newcommand{\NRuns}{20}
-\newcommand{\TrainMinLo}{18}
-\newcommand{\TrainMinHi}{46}
+\newcommand{\ParamsMin}{5{,}3}
+\newcommand{\ParamsMax}{91{,}5}
+\newcommand{\NRuns}{42}
+\newcommand{\TrainMinLo}{2}
+\newcommand{\TrainMinHi}{66}
 \newcommand{\PairsSame}{2710}
 \newcommand{\BpcBpe}{1{,}018}
 \newcommand{\BpcMorph}{1{,}007}
@@ -70,7 +70,7 @@ Unigram & 1{,}016 & 96{,}4 & 21{,}0 & 37{,}5 & 1{,}13 & 20{,}51 \\
 Морфемный Unigram & 1{,}003 & 96{,}9 & 22{,}9 & 41{,}0 & 0{,}76 & 21{,}33 \\}
 \newcommand{\TestTable}{Бит на символ & $-$0{,}0109 & [$-$0{,}0115; $-$0{,}0104] & 1{,}000 \\
 Минимальные пары, п.\,п. & $+$0{,}18 & [$-$0{,}14; $+$0{,}47] & 0{,}871 \\
-\quad в т.\,ч. с общей основой, п.\,п. & $+$0{,}49 & [$+$0{,}04; $+$0{,}95] & 0{,}982 \\
+\quad в т.\,ч. с общей основой, п.\,п. & $+$0{,}49 & [$+$0{,}02; $+$0{,}95] & 0{,}980 \\
 Слово, top-1, п.\,п. & $+$0{,}03 & [$-$0{,}54; $+$0{,}61] & 0{,}539 \\
 Слово, top-5, п.\,п. & 0{,}00 & [$-$0{,}60; $+$0{,}61] & 0{,}499 \\
 WER, п.\,п. & $-$0{,}20 & [$-$0{,}64; $+$0{,}24] & 0{,}812 \\}
@@ -164,7 +164,7 @@ WER, п.\,п. & $-$0{,}20 & [$-$0{,}64; $+$0{,}24] & 0{,}812 \\}
 \newcommand{\BandZeroWords}{4\,473}
 \newcommand{\BandZeroShare}{0{,}9}
 \newcommand{\WerMin}{20{,}5}
-\newcommand{\WerMax}{21{,}5}
+\newcommand{\WerMax}{23{,}4}
 \newcommand{\WerRecovered}{57}
 \newcommand{\StepsBpe}{10\,027}
 \newcommand{\StepsMorph}{12\,001}
@@ -194,7 +194,7 @@ WER, п.\,п. & $-$0{,}20 & [$-$0{,}64; $+$0{,}24] & 0{,}812 \\}
 \newcommand{\DPairsMorphMfs}{$+$0{,}08}
 \newcommand{\CIPairsMorphMfs}{[$-$0{,}22; $+$0{,}38]}
 \newcommand{\DPairsSameMorphMfs}{$-$0{,}05}
-\newcommand{\CIPairsSameMorphMfs}{[$-$0{,}52; $+$0{,}41]}
+\newcommand{\CIPairsSameMorphMfs}{[$-$0{,}53; $+$0{,}41]}
 \newcommand{\DAccOneMorphMfs}{$+$0{,}67}
 \newcommand{\CIAccOneMorphMfs}{[$+$0{,}10; $+$1{,}25]}
 \newcommand{\DAccFiveMorphMfs}{$+$0{,}12}
@@ -206,7 +206,7 @@ WER, п.\,п. & $-$0{,}20 & [$-$0{,}64; $+$0{,}24] & 0{,}812 \\}
 \newcommand{\DPairsMfsBpe}{$+$0{,}09}
 \newcommand{\CIPairsMfsBpe}{[$-$0{,}21; $+$0{,}40]}
 \newcommand{\DPairsSameMfsBpe}{$+$0{,}54}
-\newcommand{\CIPairsSameMfsBpe}{[$+$0{,}07; $+$1{,}01]}
+\newcommand{\CIPairsSameMfsBpe}{[$+$0{,}05; $+$1{,}02]}
 \newcommand{\DAccOneMfsBpe}{$-$0{,}64}
 \newcommand{\CIAccOneMfsBpe}{[$-$1{,}22; $-$0{,}06]}
 \newcommand{\DAccFiveMfsBpe}{$-$0{,}12}
@@ -228,10 +228,198 @@ WER, п.\,п. & $-$0{,}20 & [$-$0{,}64; $+$0{,}24] & 0{,}812 \\}
 \newcommand{\DPairsMorphBpe}{$+$0{,}18}
 \newcommand{\CIPairsMorphBpe}{[$-$0{,}14; $+$0{,}47]}
 \newcommand{\DPairsSameMorphBpe}{$+$0{,}49}
-\newcommand{\CIPairsSameMorphBpe}{[$+$0{,}04; $+$0{,}95]}
+\newcommand{\CIPairsSameMorphBpe}{[$+$0{,}02; $+$0{,}95]}
 \newcommand{\DAccOneMorphBpe}{$+$0{,}03}
 \newcommand{\CIAccOneMorphBpe}{[$-$0{,}54; $+$0{,}61]}
 \newcommand{\DAccFiveMorphBpe}{0{,}00}
 \newcommand{\CIAccFiveMorphBpe}{[$-$0{,}60; $+$0{,}61]}
 \newcommand{\DWerMorphBpe}{$-$0{,}20}
 \newcommand{\CIWerMorphBpe}{[$-$0{,}64; $+$0{,}24]}
+\newcommand{\MTtrain}{39\,737}
+\newcommand{\MTdev}{1\,846}
+\newcommand{\MTtest}{2\,848}
+\newcommand{\MTphrase}{1\,510}
+\newcommand{\MTTable}{BPE & 21{,}7\,$\pm$\,0{,}2 & 22{,}3\,$\pm$\,0{,}9 & 20{,}1\,$\pm$\,0{,}3 & 26{,}3\,$\pm$\,0{,}4 \\
+Morfessor + BPE & 22{,}6\,$\pm$\,0{,}5 & 23{,}0\,$\pm$\,0{,}1 & 20{,}1\,$\pm$\,0{,}3 & 26{,}4\,$\pm$\,0{,}4 \\
+Морфемный BPE & 24{,}0\,$\pm$\,0{,}5 & 23{,}7\,$\pm$\,0{,}3 & 20{,}6\,$\pm$\,0{,}2 & 26{,}2\,$\pm$\,0{,}5 \\
+\midrule
+Разность & $+$2{,}4* & $+$1{,}4* & $+$0{,}5* & $-$0{,}1 \\}
+\newcommand{\MTPhraseTable}{BPE & 23{,}8\,$\pm$\,0{,}1 & 27{,}5\,$\pm$\,1{,}0 & 20{,}5\,$\pm$\,0{,}5 & 30{,}7\,$\pm$\,0{,}4 \\
+Morfessor + BPE & 25{,}2\,$\pm$\,0{,}4 & 28{,}7\,$\pm$\,0{,}2 & 21{,}1\,$\pm$\,0{,}4 & 31{,}3\,$\pm$\,0{,}5 \\
+Морфемный BPE & 27{,}5\,$\pm$\,0{,}6 & 29{,}5\,$\pm$\,0{,}8 & 21{,}9\,$\pm$\,0{,}4 & 31{,}6\,$\pm$\,0{,}2 \\
+\midrule
+Разность & $+$3{,}7* & $+$2{,}0* & $+$1{,}4* & $+$0{,}9* \\}
+\newcommand{\MTRSsBpe}{21{,}7}
+\newcommand{\MTRSsBpeBleu}{3{,}0}
+\newcommand{\MTRSsMfs}{22{,}6}
+\newcommand{\MTRSsMfsBleu}{3{,}0}
+\newcommand{\MTRSsMorph}{24{,}0}
+\newcommand{\MTRSsMorphBleu}{3{,}3}
+\newcommand{\MTRSsD}{$+$2{,}4}
+\newcommand{\MTRSsCI}{[$+$2{,}1; $+$2{,}5]}
+\newcommand{\MTRSsDMfs}{$+$0{,}9}
+\newcommand{\MTRSsCIMfs}{[$+$0{,}6; $+$1{,}0]}
+\newcommand{\MTRSiBpe}{22{,}3}
+\newcommand{\MTRSiBpeBleu}{3{,}6}
+\newcommand{\MTRSiMfs}{23{,}0}
+\newcommand{\MTRSiMfsBleu}{3{,}6}
+\newcommand{\MTRSiMorph}{23{,}7}
+\newcommand{\MTRSiMorphBleu}{3{,}7}
+\newcommand{\MTRSiBpeTwo}{22{,}0}
+\newcommand{\MTRSiBpeTwoBleu}{3{,}2}
+\newcommand{\MTRSiMorphTwo}{22{,}6}
+\newcommand{\MTRSiMorphTwoBleu}{3{,}2}
+\newcommand{\MTRSiBpeBig}{21{,}9}
+\newcommand{\MTRSiBpeBigBleu}{3{,}6}
+\newcommand{\MTRSiMorphBig}{24{,}1}
+\newcommand{\MTRSiMorphBigBleu}{3{,}9}
+\newcommand{\MTRSiD}{$+$1{,}4}
+\newcommand{\MTRSiCI}{[$+$1{,}1; $+$1{,}5]}
+\newcommand{\MTRSiDTwo}{$+$0{,}6}
+\newcommand{\MTRSiCITwo}{[$+$0{,}3; $+$0{,}7]}
+\newcommand{\MTRSiDBig}{$+$2{,}2}
+\newcommand{\MTRSiCIBig}{[$+$1{,}7; $+$2{,}2]}
+\newcommand{\MTRSiDMfs}{$+$0{,}8}
+\newcommand{\MTRSiCIMfs}{[$+$0{,}4; $+$0{,}8]}
+\newcommand{\MTSRsBpe}{20{,}1}
+\newcommand{\MTSRsBpeBleu}{3{,}3}
+\newcommand{\MTSRsMfs}{20{,}1}
+\newcommand{\MTSRsMfsBleu}{3{,}4}
+\newcommand{\MTSRsMorph}{20{,}6}
+\newcommand{\MTSRsMorphBleu}{3{,}3}
+\newcommand{\MTSRsD}{$+$0{,}5}
+\newcommand{\MTSRsCI}{[$+$0{,}4; $+$0{,}7]}
+\newcommand{\MTSRsDMfs}{0{,}0}
+\newcommand{\MTSRsCIMfs}{[$-$0{,}1; $+$0{,}2]}
+\newcommand{\MTSRiBpe}{26{,}3}
+\newcommand{\MTSRiBpeBleu}{6{,}1}
+\newcommand{\MTSRiMfs}{26{,}4}
+\newcommand{\MTSRiMfsBleu}{6{,}1}
+\newcommand{\MTSRiMorph}{26{,}2}
+\newcommand{\MTSRiMorphBleu}{6{,}1}
+\newcommand{\MTSRiBpeTwo}{25{,}0}
+\newcommand{\MTSRiBpeTwoBleu}{5{,}4}
+\newcommand{\MTSRiMorphTwo}{25{,}2}
+\newcommand{\MTSRiMorphTwoBleu}{5{,}6}
+\newcommand{\MTSRiBpeBig}{25{,}8}
+\newcommand{\MTSRiBpeBigBleu}{5{,}6}
+\newcommand{\MTSRiMorphBig}{26{,}5}
+\newcommand{\MTSRiMorphBigBleu}{6{,}1}
+\newcommand{\MTSRiD}{$-$0{,}1}
+\newcommand{\MTSRiCI}{[$-$0{,}2; $+$0{,}3]}
+\newcommand{\MTSRiDTwo}{$+$0{,}2}
+\newcommand{\MTSRiCITwo}{[0{,}0; $+$0{,}4]}
+\newcommand{\MTSRiDBig}{$+$0{,}7}
+\newcommand{\MTSRiCIBig}{[$+$0{,}4; $+$0{,}9]}
+\newcommand{\MTSRiDMfs}{$+$0{,}1}
+\newcommand{\MTSRiCIMfs}{[$-$0{,}2; $+$0{,}3]}
+\newcommand{\MPRSsBpe}{23{,}8}
+\newcommand{\MPRSsBpeBleu}{4{,}4}
+\newcommand{\MPRSsMfs}{25{,}2}
+\newcommand{\MPRSsMfsBleu}{4{,}8}
+\newcommand{\MPRSsMorph}{27{,}5}
+\newcommand{\MPRSsMorphBleu}{5{,}9}
+\newcommand{\MPRSsD}{$+$3{,}7}
+\newcommand{\MPRSsCI}{[$+$3{,}4; $+$4{,}2]}
+\newcommand{\MPRSsDMfs}{$+$1{,}4}
+\newcommand{\MPRSsCIMfs}{[$+$1{,}0; $+$1{,}8]}
+\newcommand{\MPRSiBpe}{27{,}5}
+\newcommand{\MPRSiBpeBleu}{6{,}2}
+\newcommand{\MPRSiMfs}{28{,}7}
+\newcommand{\MPRSiMfsBleu}{7{,}1}
+\newcommand{\MPRSiMorph}{29{,}5}
+\newcommand{\MPRSiMorphBleu}{7{,}4}
+\newcommand{\MPRSiBpeTwo}{27{,}3}
+\newcommand{\MPRSiBpeTwoBleu}{5{,}7}
+\newcommand{\MPRSiMorphTwo}{28{,}0}
+\newcommand{\MPRSiMorphTwoBleu}{6{,}0}
+\newcommand{\MPRSiBpeBig}{26{,}6}
+\newcommand{\MPRSiBpeBigBleu}{5{,}8}
+\newcommand{\MPRSiMorphBig}{29{,}7}
+\newcommand{\MPRSiMorphBigBleu}{7{,}7}
+\newcommand{\MPRSiD}{$+$2{,}0}
+\newcommand{\MPRSiCI}{[$+$1{,}2; $+$2{,}3]}
+\newcommand{\MPRSiDTwo}{$+$0{,}7}
+\newcommand{\MPRSiCITwo}{[0{,}0; $+$1{,}1]}
+\newcommand{\MPRSiDBig}{$+$3{,}2}
+\newcommand{\MPRSiCIBig}{[$+$2{,}7; $+$3{,}8]}
+\newcommand{\MPRSiDMfs}{$+$1{,}2}
+\newcommand{\MPRSiCIMfs}{[$+$0{,}6; $+$1{,}6]}
+\newcommand{\MPSRsBpe}{20{,}5}
+\newcommand{\MPSRsBpeBleu}{3{,}3}
+\newcommand{\MPSRsMfs}{21{,}1}
+\newcommand{\MPSRsMfsBleu}{3{,}4}
+\newcommand{\MPSRsMorph}{21{,}9}
+\newcommand{\MPSRsMorphBleu}{3{,}6}
+\newcommand{\MPSRsD}{$+$1{,}4}
+\newcommand{\MPSRsCI}{[$+$1{,}3; $+$2{,}0]}
+\newcommand{\MPSRsDMfs}{$+$0{,}6}
+\newcommand{\MPSRsCIMfs}{[$+$0{,}4; $+$1{,}1]}
+\newcommand{\MPSRiBpe}{30{,}7}
+\newcommand{\MPSRiBpeBleu}{7{,}8}
+\newcommand{\MPSRiMfs}{31{,}3}
+\newcommand{\MPSRiMfsBleu}{8{,}2}
+\newcommand{\MPSRiMorph}{31{,}6}
+\newcommand{\MPSRiMorphBleu}{8{,}1}
+\newcommand{\MPSRiBpeTwo}{29{,}3}
+\newcommand{\MPSRiBpeTwoBleu}{7{,}3}
+\newcommand{\MPSRiMorphTwo}{29{,}9}
+\newcommand{\MPSRiMorphTwoBleu}{7{,}2}
+\newcommand{\MPSRiBpeBig}{30{,}2}
+\newcommand{\MPSRiBpeBigBleu}{7{,}6}
+\newcommand{\MPSRiMorphBig}{31{,}3}
+\newcommand{\MPSRiMorphBigBleu}{8{,}3}
+\newcommand{\MPSRiD}{$+$0{,}9}
+\newcommand{\MPSRiCI}{[$+$0{,}6; $+$1{,}6]}
+\newcommand{\MPSRiDTwo}{$+$0{,}5}
+\newcommand{\MPSRiCITwo}{[$+$0{,}1; $+$1{,}1]}
+\newcommand{\MPSRiDBig}{$+$1{,}1}
+\newcommand{\MPSRiCIBig}{[$+$0{,}7; $+$1{,}8]}
+\newcommand{\MPSRiDMfs}{$+$0{,}6}
+\newcommand{\MPSRiCIMfs}{[$+$0{,}3; $+$1{,}3]}
+\newcommand{\AblTable}{2 тыс. & 1{,}037 & 1{,}029 & 0{,}8* & $+$0{,}5* & $+$0{,}4 & 0{,}87 & 0{,}58 & $-$0{,}6 \\
+4 тыс. & 1{,}022 & 1{,}012 & 0{,}9* & $+$0{,}6* & $+$1{,}5* & 0{,}80 & 0{,}65 & $+$0{,}1 \\
+8 тыс. & 1{,}018 & 1{,}007 & 1{,}1* & $+$0{,}2 & 0{,}0 & 1{,}03 & 0{,}78 & $-$0{,}2 \\
+16 тыс. & 1{,}012 & 0{,}998 & 1{,}4* & $+$0{,}6* & $+$0{,}7 & 1{,}18 & 0{,}78 & $+$0{,}3 \\
+32 тыс. & 1{,}015 & 0{,}997 & 1{,}8* & $+$0{,}4 & $+$0{,}2 & 1{,}22 & 0{,}75 & $-$0{,}1 \\
+\addlinespace
+10\,\% корпуса & 1{,}290 & 1{,}271 & 1{,}4* & $+$1{,}1* & 0{,}0 & 2{,}74 & 2{,}06 & $-$0{,}1 \\
+1\,\% корпуса & 1{,}861 & 1{,}820 & 2{,}2* & $+$1{,}7* & $+$0{,}2 & 13{,}61 & 10{,}41 & $-$0{,}6* \\
+\addlinespace
+4 слоя, 256 & 1{,}148 & 1{,}136 & 1{,}1* & $+$1{,}0* & $-$0{,}1 & 2{,}24 & 1{,}59 & $-$0{,}6 \\
+12 слоёв, 768 & 1{,}023 & 1{,}012 & 1{,}0* & $+$0{,}4 & $-$0{,}3 & 0{,}91 & 0{,}88 & $+$0{,}8* \\}
+\newcommand{\BpcRelDTen}{1{,}4}
+\newcommand{\NonwordBpeDTen}{2{,}7}
+\newcommand{\NonwordMorphDTen}{2{,}1}
+\newcommand{\DPairsDTen}{$+$1{,}1}
+\newcommand{\DWerDTen}{$-$0{,}1}
+\newcommand{\CIWerDTen}{[$-$0{,}6; $+$0{,}4]}
+\newcommand{\BpcRelDOne}{2{,}2}
+\newcommand{\NonwordBpeDOne}{13{,}6}
+\newcommand{\NonwordMorphDOne}{10{,}4}
+\newcommand{\DPairsDOne}{$+$1{,}7}
+\newcommand{\DWerDOne}{$-$0{,}6}
+\newcommand{\CIWerDOne}{[$-$1{,}1; $-$0{,}1]}
+\newcommand{\BpcRelSmall}{1{,}1}
+\newcommand{\NonwordBpeSmall}{2{,}2}
+\newcommand{\NonwordMorphSmall}{1{,}6}
+\newcommand{\DPairsSmall}{$+$1{,}0}
+\newcommand{\DWerSmall}{$-$0{,}6}
+\newcommand{\CIWerSmall}{[$-$1{,}2; $+$0{,}1]}
+\newcommand{\BpcRelLarge}{1{,}0}
+\newcommand{\NonwordBpeLarge}{0{,}9}
+\newcommand{\NonwordMorphLarge}{0{,}9}
+\newcommand{\DPairsLarge}{$+$0{,}4}
+\newcommand{\DWerLarge}{$+$0{,}8}
+\newcommand{\CIWerLarge}{[$+$0{,}1; $+$1{,}5]}
+\newcommand{\BpcStem}{1{,}012}
+\newcommand{\NonwordStem}{0{,}74}
+\newcommand{\TokMoreRelStem}{14}
+\newcommand{\BpcNoG}{1{,}010}
+\newcommand{\NonwordNoG}{0{,}82}
+\newcommand{\TokMoreRelNoG}{13}
+\newcommand{\MTGainLo}{1{,}4}
+\newcommand{\MTGainHi}{2{,}4}
+\newcommand{\MPGainLo}{2{,}0}
+\newcommand{\MPGainHi}{3{,}7}
+\newcommand{\NRunsMT}{72}
